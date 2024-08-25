@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import PostList from './components/PostList';
+import PostDetail from './components/PostDetail';
+import PostForm from './components/PostForm';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    state = {
+        selectedPostId: null,
+        refreshPosts: false
+    };
+
+    handleSelectPost = (postId) => {
+        this.setState({ selectedPostId: postId });
+    };
+
+    handlePostAdded = () => {
+        this.setState({ refreshPosts: !this.state.refreshPosts });
+    };
+
+    render() {
+        return (
+            <div className="app">
+                <Header />
+                <div className="main-content">
+                    <PostForm onPostAdded={this.handlePostAdded} />
+                    <PostList key={this.state.refreshPosts} onSelectPost={this.handleSelectPost} />
+                    <PostDetail postId={this.state.selectedPostId} />
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 }
 
 export default App;
